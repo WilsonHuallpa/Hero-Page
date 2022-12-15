@@ -1,5 +1,7 @@
 
+import { useContext } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../auth/context/AuthContext';
 
 
 export const Navbar = () => {
@@ -7,9 +9,15 @@ export const Navbar = () => {
     //Esto es un custom hooks useNavigate.
     //Creado por react router dom. 
     const navigate = useNavigate();
+    const { user , logout } = useContext(AuthContext);
 
     const onLogout = () => {
-        navigate("/login");
+        //Esta funcion de logout, limpia el localStore,
+        //tambien limpia el state.
+        logout();
+        navigate("/login",{
+            replace: true
+        });
         //En teoria el replace, replazar la pagina.
         //Nos no permite regresar ala pagina anterior. 
     }
@@ -58,7 +66,8 @@ export const Navbar = () => {
             <div className="navbar-collapse collapse w-100 order-3 dual-collapse2 d-flex justify-content-end">
                 <ul className="navbar-nav ml-auto">
                     <span className="nav-item nav-link">
-                        Wilson
+                        {/*El ?, si no contiene nada, no continues. */}
+                        { user?.name }
                     </span>
                     <button   
                         className='nav-item nav-link btn'
